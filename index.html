@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Myocarditis Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('form').on('submit', function(event){
+            event.preventDefault(); // Prevent the form from submitting through the browser.
+            var formData = {
+                'diabetes': $('input[name=diabetes]').val(),
+                'ctnrise': $('input[name=ctnrise]').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: formData,
+                dataType: 'json',
+                encode: true
+            })
+            .done(function(data){
+                console.log(data);
+                // Display the result
+                $('#result').text(data.result);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown){
+                console.log("Ajax Request Failed");
+                console.log(textStatus, errorThrown);
+                $('#result').text('Failed to get prediction');
+            });
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Disclaimer and Explanation Section -->
+        <div id="explanation">
+            <h2>Disclaimer: The following is for illustrative purposes ONLY!</h2>
+            <h3>Understanding the Myocarditis Prediction Model</h3>
+            <h4>What the Model Does</h4>
+            <p>Our website features a model designed to predict the likelihood of myocarditis, a serious heart condition, in patients. It is a part of the bachelor project by students of the bachelor degree in medicine at the University of Groningen. The model uses two key indicators:</p>
+            <ul>
+                <li><strong>Diabetes Mellitus Type 2:</strong> A condition characterized by high blood sugar levels.</li>
+                <li><strong>Troponin Rise:</strong> A marker often used to detect heart muscle damage.</li>
+            </ul>
+            <p>Based on these factors, the model calculates the probability of a myocarditis diagnosis.</p>
+        </div>
+
+        <!-- Prediction Form Section -->
+        <h1>Myocarditis Prediction</h1>
+        <form id="predictionForm">
+            <label for="diabetes">Diabetes Mellitus type 2 (0=No, 1=Yes):</label>
+            <input type="number" id="diabetes" name="diabetes" min="0" max="1" required>
+            <br><br>
+            <label for="ctnrise">Cardiac Troponin Rise (0=No, 1=Yes):</label>
+            <input type="number" id="ctnrise" name="ctnrise" min="0" max="1" required>
+            <br><br>
+            <button type="submit">Predict</button>
+        </form>
+        <h2 id="result"></h2>
+
+        <!-- Additional Information Section -->
+        <div id="additionalInfo">
+            <h3>How It Works</h3>
+            <p>The model uses a statistical method called logistic regression, which analyzes the relationship between the likelihood of myocarditis and the two indicators. Here's a step-by-step process of how the model makes predictions:</p>
+            <ol>
+                <li><strong>Data Collection:</strong> We gather patient data, including their diabetes status and troponin levels.</li>
+                <li><strong>Data Processing:</strong> This data is cleaned and standardized to ensure consistency.</li>
+                <li><strong>Model Training:</strong> The model is trained using historical patient data to recognize patterns associated with myocarditis.</li>
+                <li><strong>Prediction:</strong> When new patient data is inputted, the model evaluates it and provides a percentage likelihood of myocarditis.</li>
+            </ol>
+
+            <h3>Limitations and Disclaimer</h3>
+            <p>While this model shows good quality results, it's important to be aware of its limitations:</p>
+            <ul>
+                <li><strong>Sample Size:</strong> The model was trained on a relatively small dataset, which may not capture all possible variations in patient data.</li>
+                <li><strong>Generalization:</strong> Due to the limited sample size, the model might not perform as well on a broader population.</li>
+                <li><strong>Clinical Use:</strong> This tool is designed to illustrate how predictive models can assist in healthcare, but it is not a substitute for professional medical diagnosis and should be used with caution.</li>
+            </ul>
+
+            <h3>Accuracy and Reliability</h3>
+            <p>Despite its limitations, the model's predictions are in line with established medical literature. It estimates that the incidence of myocarditis in patients ranges from 0.06% to 1%, which aligns with published data for conditions like Non-Small Cell Lung Cancer (NSCLC).</p>
+
+            <h3>Conclusion</h3>
+            <p>This model provides an example of how technology can help in predicting medical conditions like myocarditis. However, due to its limitations, it should be used as an illustrative tool rather than a definitive diagnostic instrument. Always consult with healthcare professionals for accurate diagnosis and treatment.</p>
+
+            <h3>Bibliography</h3>
+            <p>1. Spallarossa P, Tini G, Sarocchi M, et al. Identification and Management of Immune Checkpoint Inhibitor-Related Myocarditis: Use Troponin Wisely. J Clin Oncol. 2019;37(25):2201-2205. doi:10.1200/JCO.18.02464</p>
+        </div>
+    </div>
+</body>
+</html>
