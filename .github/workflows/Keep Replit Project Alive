@@ -1,0 +1,12 @@
+name: Keep Replit Project Alive
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send request to Replit project
+        run: curl -s https://059e3903-c386-4c62-8892-6d6b75ff8551-00-yzfcnuke9vc2.spock.replit.dev/ > /dev/null
